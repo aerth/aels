@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/aerth/aels"
+	"github.com/aerth/aels/lib/aels"
 )
 
 func main() {

@@ -1,0 +1,3 @@
+[metadata.heroku]
+  root-package = "github.com/aerth/aels/cmd/license-server"
+  install = [ "./cmd/license-server" ]

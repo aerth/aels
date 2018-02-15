@@ -1,2 +1,2 @@
 all:
-	go build ./cmd/license-server
+	go build -o license-server

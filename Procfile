@@ -1,2 +1,2 @@
 PORT?=:80
-web: license-server
+web: aels
