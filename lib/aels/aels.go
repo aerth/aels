@@ -91,6 +91,9 @@ func (l *LicenseServer) handlerFunc(w http.ResponseWriter, r *http.Request) {
 			}
 			return
 		}
+		if r.URL.Path == "/" {
+			w.Write([]byte("Welcome to the AELS System\b"))
+		}
 		http.NotFound(w, r)
 		return
 	case http.MethodPost:
@@ -103,6 +106,7 @@ func (l *LicenseServer) handlerFunc(w http.ResponseWriter, r *http.Request) {
 		log.Println("key good:", key)
 		w.WriteHeader(http.StatusOK)
 	default:
+		http.NotFound(w, r)
 		return
 	}
 }
