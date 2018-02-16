@@ -1,2 +1,3 @@
+[LicenseServer]
 Port = ":8080"
 PrivateKey = "SecretPassword"

@@ -1,2 +1,2 @@
-PORT?=:80
+PORT?=80
 web: aels

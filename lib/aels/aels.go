@@ -11,6 +11,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+func init() {
+	log.SetFlags(log.Lshortfile)
+}
+
 type LicenseServer struct {
 	Title        string
 	Port         string
@@ -36,7 +40,7 @@ var ErrConfig = fmt.Errorf("bad config")
 func New(configpath ...string) (*LicenseServer, error) {
 	l := &LicenseServer{}
 	if configpath != nil && configpath[0] != "" {
-		//println("found config:", configpath[0])
+		println("Loading", configpath[0])
 		ttree, err := toml.LoadFile(configpath[0])
 		if err != nil {
 			return nil, err
@@ -54,7 +58,13 @@ func New(configpath ...string) (*LicenseServer, error) {
 		l.Port = s
 	}
 	if l.PrivateKey == "" || l.Port == "" {
-		return nil, ErrConfig
+		println("Loading config.toml")
+		ttree, err := toml.LoadFile("config.toml")
+		if err != nil {
+			return nil, ErrConfig
+		}
+		err = ttree.Unmarshal(l)
+		return l, err
 	}
 
 	return l, nil
