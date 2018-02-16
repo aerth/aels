@@ -53,7 +53,7 @@ func New(configpath ...string) (*LicenseServer, error) {
 		l.PrivateKey = s
 	}
 
-	if s := os.Getenv("PORT"); s != "" {
+	if s := os.Getenv("ADDR"); s != "" {
 		//println("found environmental: port", s)
 		l.Port = s
 	}
