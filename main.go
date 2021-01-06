@@ -3,16 +3,34 @@ package main
 import (
 	"flag"
 	"log"
-	//"github.com/aerth/aels/lib/aels"
+	"os"
+	"time"
+
+	"github.com/aerth/aels/licensed"
 )
 
 func main() {
-	log.SetFlags(log.Lshortfile)
-	configpath := flag.String("conf", "", "path to toml config file. use $PORT and $SECRET environment to skip config.")
+	var (
+		defaultconfig = "aels.toml"
+		logger        = log.New(os.Stderr, "[ÆLicenseServer] ", log.LstdFlags)
+		configpath    = flag.String("conf", defaultconfig, "path to toml config file. use $PORT and $SECRET environment to skip config.")
+		isDebug       = flag.Bool("debug", false, "debug")
+	)
+
 	flag.Parse()
-	l, err := New(*configpath)
-	if err != nil {
-		log.Fatal(err)
+
+	if *isDebug {
+		logger.SetFlags(log.Lshortfile | log.LstdFlags)
 	}
-	log.Fatal(l.ListenAndServe())
+
+	l, err := licensed.New(logger, *configpath)
+	if err != nil {
+		logger.Fatal(err)
+	}
+
+	go func() {
+		<-time.After(time.Second)
+		logger.Println("Serving")
+	}()
+	logger.Fatal(l.ListenAndServe())
 }
