@@ -1,0 +1,3 @@
+/license-server
+*.toml
+!config.toml
