@@ -28,6 +28,9 @@ func main() {
 		logger.Fatal("startup", err)
 	}
 
+	if l.PrivateKey == "" {
+		logger.Fatalf("missing private key in config")
+	}
 	go func() {
 		<-time.After(time.Second)
 		logger.Println("Serving")

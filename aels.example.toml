@@ -1,4 +1,4 @@
 [LicenseServer]
-Addr = "127.0.0.1:8080"
 #Port = 8080
+Addr = "127.0.0.1:8080"
 PrivateKey = "SecretPasswordThatNeverChanges"
