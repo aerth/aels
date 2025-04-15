@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	toml "github.com/pelletier/go-toml"
+	toml "github.com/BurntSushi/toml"
 )
 
 var ErrFatal = fmt.Errorf("fatal")
@@ -25,11 +25,7 @@ func New(logger interface{ Printf(string, ...interface{}) }, optionalConfigPath 
 	}
 	if configpath != "" {
 		l.log.Printf("Loading config: %q", configpath)
-		ttree, err := toml.LoadFile(configpath)
-		if err != nil {
-			return nil, err
-		}
-		err = ttree.Unmarshal(l)
+		_, err := toml.DecodeFile(configpath, &l)
 		if err != nil {
 			return nil, err
 		}
