@@ -25,7 +25,7 @@ func main() {
 
 	l, err := licensed.New(logger, *configpath)
 	if err != nil {
-		logger.Fatal(err)
+		logger.Fatal("startup", err)
 	}
 
 	go func() {
