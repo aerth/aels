@@ -30,7 +30,9 @@ func New(logger interface{ Printf(string, ...interface{}) }, optionalConfigPath 
 			return nil, err
 		}
 		err = ttree.Unmarshal(l)
-		return l, err
+		if err != nil {
+			return nil, err
+		}
 	}
 	if s := os.Getenv("SECRET"); s != "" {
 		l.log.Printf("found environmental: secret")
@@ -50,7 +52,9 @@ func New(logger interface{ Printf(string, ...interface{}) }, optionalConfigPath 
 		}
 	}
 	if l.PrivateKey == "" {
+		println("Missing PrivateKey")
 		return nil, ErrConfig
 	}
+	l.log = logger
 	return l, nil
 }

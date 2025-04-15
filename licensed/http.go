@@ -4,10 +4,9 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"os"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
 type LicenseServer struct {
@@ -35,6 +34,9 @@ func (l License) String() string {
 }
 
 func (l *LicenseServer) ListenAndServe() error {
+	if l.log == nil {
+		return fmt.Errorf("nil log")
+	}
 	if l.Port != 0 && l.Addr != "" {
 		println("cant have both port and addr, pick one")
 		return ErrConfig
@@ -53,7 +55,9 @@ func (l *LicenseServer) ListenAndServe() error {
 }
 
 func (l *LicenseServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	l.log.Printf("[visit] %s %s %s %s %s", r.UserAgent(), r.Method, r.URL.Path, r.RemoteAddr, r.Header.Get("x-forwarded-for"))
+	if l.log != nil {
+		l.log.Printf("[visit] %s %s %s %s %s", r.UserAgent(), r.Method, r.URL.Path, r.RemoteAddr, r.Header.Get("x-forwarded-for"))
+	}
 	switch r.Method {
 	default:
 		http.NotFound(w, r)
